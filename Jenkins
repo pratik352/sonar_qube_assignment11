@@ -1,0 +1,54 @@
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven_3.8.6' 
+        jdk 'JDK_11'        
+    }
+
+    environment {
+        SONAR_TOKEN = credentials('sonar-token-id') 
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/pratik352/sonar_qube_assignment11.git'
+            }
+        }
+
+        stage('Build & Package') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Run Tests with Selenium') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('SonarQube Scan') {
+            steps {
+                withSonarQubeEnv('SonarQube_Server') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Publish Results') {
+            steps {
+                junit '**/target/surefire-reports/*.xml'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed!'
+        }
+    }
+}
