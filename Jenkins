@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/pratik352/sonar_qube_assignment11.git'
+                git branch: 'main', url: 'https://github.com/pratik352/sonar_qube_assignment11.git'
             }
         }
 
