@@ -1,15 +1,15 @@
-
+// Jenkinsfile
 pipeline {
     agent any
 
     tools {
-        maven 'M3' 
-        jdk 'JAVA_HOME'        
+        maven 'M3'
+        jdk 'JAVA_HOME'
     }
 
     environment {
-        SONAR_TOKEN = credentials('sonar-token-id') 
-        AVA_HOME = tool name: 'JDK_17', type: 'jdk'
+        SONAR_TOKEN = credentials('sonar-token-id')
+        JAVA_HOME = tool name: 'JDK_17', type: 'jdk'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
 
@@ -32,23 +32,14 @@ pipeline {
             }
         }
 
-        stages {
-            stage('SonarQube Analysis') {
-                steps {
-                    withCredentials([string(credentialsId: 'sonar-token-id', variable: 'SONAR_TOKEN')]) {
-                        sh 'sonar-scanner -Dsonar.login=$sonar_id'
-                }
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token-id', variable: 'SONAR_TOKEN')]) {
+                    sh 'sonar-scanner -Dsonar.login=$sonar_id'
                 }
             }
         }
 
-        stage('SonarQube Scan') {
-            steps {
-                withSonarQubeEnv('SonarQube_Server') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
 
         stage('Publish Results') {
             steps {
