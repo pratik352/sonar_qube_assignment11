@@ -24,6 +24,7 @@ public class AppTest {
         
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new", "--no-sandbox", "--disable-dev-shm-usage");
+        options.setBinary("/usr/bin/google-chrome");
         WebDriver driver = new ChromeDriver(options);
         driver.get("https://www.google.com");
         assertEquals("Google", driver.getTitle());
