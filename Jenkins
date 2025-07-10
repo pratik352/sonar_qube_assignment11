@@ -20,6 +20,10 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/pratik352/sonar_qube_assignment11.git'
+                sh 'echo $JAVA_HOME'
+                sh 'java -version'
+
+
             }
         }
 
