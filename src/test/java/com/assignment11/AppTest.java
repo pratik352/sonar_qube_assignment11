@@ -20,7 +20,8 @@ public class AppTest {
 
     @Test
     public void testGoogleSearch() {
-        WebDriverManager.chromedriver().setup();
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new", "--no-sandbox", "--disable-dev-shm-usage");
         WebDriver driver = new ChromeDriver(options);
